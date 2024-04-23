@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 function WeatherCard({ weatherCardData }) {
   const getDayOfWeek = (dateString) => {
@@ -25,16 +26,17 @@ function WeatherCard({ weatherCardData }) {
   };
   return (
     <>
-      <div className="w-96 mb-8 p-8 h-80 mx-auto  rounded-lg  text-gray-800 border shadow-md">
+      <div className="w-96 mt-5 mb-8 p-8 h-80 mx-auto bg-white rounded-lg  text-gray-800 border shadow-md">
         <div className="flex justify-between space-x-8">
           <div className="flex flex-col items-center">
             <img src={weatherCardData.current.condition.icon} alt="" />
-            <h1 className="text-xl font-semibold">
-              {weatherCardData.location.name}
-              {(weatherCardData.location.name !== weatherCardData.location.region &&
-                convertToEnglishChars(weatherCardData.location.name) !== weatherCardData.location.region) &&
-                ` / ${weatherCardData.location.region}`}
-            </h1>
+          <Link
+           className="text-xl font-semibold"
+           to={weatherCardData.location.name}
+           >
+         {weatherCardData.location.name} {(weatherCardData.location.name !== weatherCardData.location.region &&convertToEnglishChars(weatherCardData.location.name) !== weatherCardData.location.region) && ` / ${weatherCardData.location.region}`}
+
+          </Link>
           </div>
           <span className="font-bold text-8xl">{weatherCardData.current.temp_c}°</span>
         </div>

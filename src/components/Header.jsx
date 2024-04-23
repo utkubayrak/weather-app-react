@@ -17,7 +17,7 @@ function Header({address}) {
     useEffect(() => {
         const changeBackground = () => {
             if (window.scrollY >= 80) {
-                setBgColor('bg-black');
+                setBgColor('bg-gradient-to-br  from-blue-500 via-sky-800 to-indigo-500');
             } else {
                 setBgColor('bg-transparent');
             }
@@ -57,7 +57,7 @@ function Header({address}) {
                         <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
                     </svg>
                 </button>
-                <div className='flex justify-start pl-4 text-black text-lg mb-2 mt-0'>{address.city}, {address.country.name}</div>
+                <div className='flex justify-start pl-4 text-black text-lg mb-2 mt-0'>{address}</div>
                 <hr className="h-px w-48 mx-auto bg-gray-200 border-0" />
                 <div className="offcanvas-body flex items-center justify-start overflow-y-auto pl-8">
                     <ul className="py-2 text-black text-lg">

@@ -76,7 +76,6 @@ export const weatherForecastService = async (cityName) => {
   try {
     const response = await axios.request(options);
     return response.data; 
-
   } catch (error) {
     console.error('Error fetching weather data for city: ', error);
   }

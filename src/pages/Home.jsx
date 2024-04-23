@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { cityService, ipAddressService, weatherForecastService, weatherService } from '../services/WeatherService';
 import Header from '../components/Header'
 import WeatherCard from '../components/WeatherCard';
-import bgImage from '../assets/image/bg-image.webp';
 
 function Home() {
   const [ipAddressInfo, setIpAddressInfo] = useState(null);
@@ -78,8 +77,8 @@ function Home() {
   };
   return (
     <>
-     {ipAddressInfo && <Header address={ipAddressInfo} />}
-      <section className="relative h-96 w-full bg-hero-pattern bg-cover bg-center bg-no-repeat">
+     {ipAddressInfo && <Header address={ipAddressInfo.city} />}
+      <section className="relative h-96 w-full bg-hero-pattern bg-cover bg-center bg-no-repeat ">
         <div className="flex items-center justify-center h-full ">
           <form onSubmit={handleSubmit} className="max-w-[480px] w-full px-4">
             <div className="relative">
@@ -98,17 +97,17 @@ function Home() {
           </form>
         </div>
       </section>
-      <div className=" mx-auto mt-5">
+      <div className=" mx-auto bg-gradient-to-br from-blue-500 via-sky-800 to-indigo-500">
         <div className='grid md:grid-cols-2'>
           {cityWeatherData && <WeatherCard weatherCardData={cityWeatherData} />}
-          <div className="flex flex-col gap-4 justify-center items-center">
+          <div className="flex flex-col gap-4 justify-center items-center mt-5">
             <h1 className='flex flex-col gap-4 justify-center mb-5'>{ipAddressInfo?.country?.name || 'Bilinmeyen Ülke'} İÇİN HAVA KOŞULLARI</h1>
             {weatherData && Object.keys(weatherData).map((cityName, index) => {
               const cityWeather = weatherData[cityName];
               const temperature = cityWeather.current.temp_c;
               const weatherIcon = cityWeather.current.condition.icon;
               return (
-                <div className="flex w-80 x-auto items-center p-4 bg-white rounded-lg shadow-md " key={index}>
+                <div className="flex mb-5 w-80 x-auto items-center p-4 bg-white rounded-lg shadow-md " key={index}>
                   <div className='flex justify-start w-48'>
                     <div className="text-xl flex justify-start w-full ">{cityName}</div>
                   </div>
