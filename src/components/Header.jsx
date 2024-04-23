@@ -12,7 +12,6 @@ function Header() {
     };
     const openMenu = () => {
         setIsOpen(true);
-        
     }
 
     useEffect(() => {
@@ -49,7 +48,7 @@ function Header() {
                 </button>
             </nav>
 
-            <div className={`fixed top-0 right-0 z-50 h-screen w-96 max-md:w-80 bg-white shadow-lg transition-all duration-500 ${isOpen ? 'right-0' : '-right-96'}`}>
+            <div className={`fixed top-0 z-50 h-screen w-96 max-md:w-80 bg-white shadow-lg transition-all duration-500 ${isOpen ? 'right-0' : '-right-96'}`}>
                 <button
                     className='w-full flex justify-end p-8'
                     onClick={closeMenu}

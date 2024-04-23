@@ -1,43 +1,70 @@
 import React, { useState, useEffect } from 'react';
-import { cityService, weatherForecastService, weatherService } from '../services/WeatherService';
+import { cityService, ipAddressService, weatherForecastService, weatherService } from '../services/WeatherService';
 import Header from '../components/Header'
 import WeatherCard from '../components/WeatherCard';
 
 function Home() {
+  const [ipAddressInfo, setIpAddressInfo] = useState(null);
   const [weatherData, setWeatherData] = useState(null);
   const [cityData, setCityData] = useState([]);
   const [cityWeatherData, setCityWeatherData] = useState(null);
   const [city, setCity] = useState('');
 
+  //Ip adres işlemleri
+  useEffect(() => {
+    const fetchIP = async () => {
+      try {
+        const response = await fetch('https://api.ipify.org');
+        const data = await response.text();
+        console.log(data);
+        setIpAddressInfo(await ipAddressService(data));
+      } catch (error) {
+        console.log('Failed to fetch IP: ', error);
+      }
+    };
 
-  const handleSearch = async (e) => {
-    e.preventDefault(); // Formun varsayılan gönderme davranışını engeller
-    try {
-      const data = await weatherForecastService(city);
-      setCityWeatherData(data); // WeatherCard bileşenine gönderilecek veriyi günceller
+    fetchIP();
+  }, []);
 
-    } catch (error) {
-      console.error('Hava durumu bilgileri alınırken bir hata oluştu:', error);
-    }
-  };
-  
+  //Belirli bir şehrin hava durumu verilerin alınması
+  useEffect(() => {
+    const fetchWeatherData = async () => {
+      try {
+        if (city) {
+          const data = await weatherForecastService(city);
+          setCityWeatherData(data);
+        } else if (ipAddressInfo) {
+          const data = await weatherForecastService(ipAddressInfo.city);
+          setCityWeatherData(data);
+        }
+      } catch (error) {
+        console.error('Hava durumu bilgileri alınırken bir hata oluştu:', error);
+      }
+    };
+    fetchWeatherData();
+  }, [city, ipAddressInfo]);
+
+  //Ip adress'e göre ülkenin şehir listesinin alınması
   useEffect(() => {
     const getCities = async () => {
       try {
-        const data = await cityService();
-        if (data) {
-          const cityNames = data.map(city => city.name.split(' ')[0])
-          setCityData(cityNames);
-        } else {
-          console.error('Veri alınamadı');
+        if (ipAddressInfo && ipAddressInfo.country) {
+          const data = await cityService(ipAddressInfo.country.code);
+          if (data) {
+            const cityNames = data.map(city => city.name.split(' ')[0])
+            setCityData(cityNames);
+          } else {
+            console.error('Veri alınamadı');
+          }
         }
       } catch (error) {
         console.error('Şehir servisinden veri alınırken hata oluştu', error);
       }
-    }; getCities();
-  }, []
-  );
+    };
+    getCities();
+  }, [ipAddressInfo]);
 
+  //Ülkenin şehirlerinin hava durumu bilgilerinin alınması
   useEffect(() => {
     const getWeatherForCities = async () => {
       try {
@@ -58,21 +85,27 @@ function Home() {
     if (cityData.length > 0) {
       getWeatherForCities();
     }
-  }, [cityData]
-  );
+  }, [cityData]);
+
+  //Form ile şehir ismi alma
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setCity(e.target.elements.city.value);
+    e.target.reset(); // Formu resetle
+  };
+
   return (
     <>
       <Header></Header>
       <section className="relative h-96 w-full bg-[url(https://images8.alphacoders.com/135/1354188.jpeg)] bg-cover bg-center bg-no-repeat">
         <div className="flex items-center justify-center h-full ">
-          <form onSubmit={handleSearch} className="max-w-[480px] w-full px-4">
+          <form onSubmit={handleSubmit} className="max-w-[480px] w-full px-4">
             <div className="relative">
               <input
                 type="text"
+                name='city'
                 className="w-full border h-12 shadow p-4 rounded-full focus-visible:outline-none"
                 placeholder="Search..."
-                value={city}
-                onChange={(e) => setCity(e.target.value)}
               />
               <button type="submit">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5  absolute top-3.5 right-3 ">
@@ -85,9 +118,9 @@ function Home() {
       </section>
       <div className=" mx-auto mt-5">
         <div className='grid md:grid-cols-2'>
-        {cityWeatherData && <WeatherCard weatherCardData={cityWeatherData} />}
+          {cityWeatherData && <WeatherCard weatherCardData={cityWeatherData} />}
           <div className="flex flex-col gap-4 justify-center items-center">
-            <h1 className='flex flex-col gap-4 justify-center mb-5'>TÜRKİYE İÇİN HAVA KOŞULLARI</h1>
+            <h1 className='flex flex-col gap-4 justify-center mb-5'>{ipAddressInfo?.country?.name || 'Bilinmeyen Ülke'} İÇİN HAVA KOŞULLARI</h1>
             {weatherData && Object.keys(weatherData).map((cityName, index) => {
               const cityWeather = weatherData[cityName];
               const temperature = cityWeather.current.temp_c;
@@ -107,5 +140,7 @@ function Home() {
           </div>
         </div>
       </div>
-    </>)
-} export default Home;
+    </>
+  )
+}
+export default Home;
