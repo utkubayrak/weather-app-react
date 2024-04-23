@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+const apiKey = process.env.REACT_APP_RAPID_API_KEY;
+
 export const ipAddressService = async (ipAddress) => {
 const encodedParams = new URLSearchParams();
 encodedParams.set('ip', `${ipAddress}`);
@@ -8,15 +10,14 @@ const options = {
   url: 'https://ip-location5.p.rapidapi.com/get_geo_info',
   headers: {
     'content-type': 'application/x-www-form-urlencoded',
-    'X-RapidAPI-Key': 'd5d30560dbmsh2e2a4d60af630a7p148cc1jsna0149d9c69f4',
+    'X-RapidAPI-Key': `${apiKey}`,
     'X-RapidAPI-Host': 'ip-location5.p.rapidapi.com'
   },
   data: encodedParams,
 };
-
 try {
 	const response = await axios.request(options);
-	console.log(response.data);
+  console.log('xxxx');
   return response.data;
 } catch (error) {
 	console.error(error);
@@ -29,37 +30,33 @@ export const cityService = async (country) => {
     method: 'GET',
     url: BASE_URL,
     headers: {
-      'X-RapidAPI-Key': 'd5d30560dbmsh2e2a4d60af630a7p148cc1jsna0149d9c69f4',
+      'X-RapidAPI-Key': `${apiKey}`,
       'X-RapidAPI-Host': 'wft-geo-db.p.rapidapi.com'
     }
   };
-
   try {
     const response = await axios.request(options);
-    console.log("çalıştııııııı : ", response.data.data);
-    return response.data.data; // Return the data
+    return response.data.data; 
   } catch (error) {
     console.error('Error fetching cities data:', error);
-    throw error; // Throw the error to propagate it to the caller
+    throw error; 
   }
 };
 export const weatherService = async (cityName) => {
   const options = {
     url: 'https://weatherapi-com.p.rapidapi.com/current.json',
-    params: { q: cityName }, // Fixed case of city name
+    params: { q: cityName }, 
     headers: {
-      'X-RapidAPI-Key': 'd5d30560dbmsh2e2a4d60af630a7p148cc1jsna0149d9c69f4',
+      'X-RapidAPI-Key': `${apiKey}`,
       'X-RapidAPI-Host': 'weatherapi-com.p.rapidapi.com'
     }
   };
-
   try {
     const response = await axios.request(options);
-    // console.log('Weather API response:', response.data);
-    return response.data; // Return the data
+    return response.data; 
   } catch (error) {
-    console.error('Error fetching weather data:', error);
-    throw error; // Throw the error to propagate it to the caller
+    console.error('Error fetching weather data for cities:', error);
+    throw error;
   }
 };
 
@@ -72,18 +69,16 @@ export const weatherForecastService = async (cityName) => {
       days: '3'
     },
     headers: {
-      'X-RapidAPI-Key': 'd5d30560dbmsh2e2a4d60af630a7p148cc1jsna0149d9c69f4',
+      'X-RapidAPI-Key': `${apiKey}`,
       'X-RapidAPI-Host': 'weatherapi-com.p.rapidapi.com'
     }
   };
-
   try {
     const response = await axios.request(options);
-    console.log(response.data);
-    return response.data; // Return the data
+    return response.data; 
 
   } catch (error) {
-    console.error(error);
+    console.error('Error fetching weather data for city: ', error);
   }
 };
 

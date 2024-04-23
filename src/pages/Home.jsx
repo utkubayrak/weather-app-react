@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { cityService, ipAddressService, weatherForecastService, weatherService } from '../services/WeatherService';
 import Header from '../components/Header'
 import WeatherCard from '../components/WeatherCard';
+import bgImage from '../assets/image/bg-image.webp';
 
 function Home() {
   const [ipAddressInfo, setIpAddressInfo] = useState(null);
@@ -13,23 +14,16 @@ function Home() {
   //Ip adres işlemleri
   useEffect(() => {
     const fetchIP = async () => {
-      try {
         const response = await fetch('https://api.ipify.org');
         const data = await response.text();
-        console.log(data);
         setIpAddressInfo(await ipAddressService(data));
-      } catch (error) {
-        console.log('Failed to fetch IP: ', error);
-      }
     };
-
     fetchIP();
   }, []);
 
   //Belirli bir şehrin hava durumu verilerin alınması
   useEffect(() => {
     const fetchWeatherData = async () => {
-      try {
         if (city) {
           const data = await weatherForecastService(city);
           setCityWeatherData(data);
@@ -37,9 +31,6 @@ function Home() {
           const data = await weatherForecastService(ipAddressInfo.city);
           setCityWeatherData(data);
         }
-      } catch (error) {
-        console.error('Hava durumu bilgileri alınırken bir hata oluştu:', error);
-      }
     };
     fetchWeatherData();
   }, [city, ipAddressInfo]);
@@ -47,7 +38,6 @@ function Home() {
   //Ip adress'e göre ülkenin şehir listesinin alınması
   useEffect(() => {
     const getCities = async () => {
-      try {
         if (ipAddressInfo && ipAddressInfo.country) {
           const data = await cityService(ipAddressInfo.country.code);
           if (data) {
@@ -57,9 +47,6 @@ function Home() {
             console.error('Veri alınamadı');
           }
         }
-      } catch (error) {
-        console.error('Şehir servisinden veri alınırken hata oluştu', error);
-      }
     };
     getCities();
   }, [ipAddressInfo]);
@@ -67,7 +54,6 @@ function Home() {
   //Ülkenin şehirlerinin hava durumu bilgilerinin alınması
   useEffect(() => {
     const getWeatherForCities = async () => {
-      try {
         const weatherDataPromises = cityData.map(async cityName => {
           const data = await weatherService(cityName);
           return { cityName, data };
@@ -78,9 +64,6 @@ function Home() {
           return acc;
         }, {});
         setWeatherData(weatherDataMap);
-      } catch (error) {
-        console.error('Hava durumu bilgileri alınırken bir hata oluştu:', error);
-      }
     };
     if (cityData.length > 0) {
       getWeatherForCities();
@@ -93,11 +76,10 @@ function Home() {
     setCity(e.target.elements.city.value);
     e.target.reset(); // Formu resetle
   };
-
   return (
     <>
-      <Header></Header>
-      <section className="relative h-96 w-full bg-[url(https://images8.alphacoders.com/135/1354188.jpeg)] bg-cover bg-center bg-no-repeat">
+     {ipAddressInfo && <Header address={ipAddressInfo} />}
+      <section className="relative h-96 w-full bg-hero-pattern bg-cover bg-center bg-no-repeat">
         <div className="flex items-center justify-center h-full ">
           <form onSubmit={handleSubmit} className="max-w-[480px] w-full px-4">
             <div className="relative">
