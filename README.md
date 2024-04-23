@@ -6,7 +6,9 @@ Bu React tabanlı bir hava durumu uygulamasıdır. Kullanıcılar, belirli bir �
 ## Özellikler
 
 - Kullanıcılar bir şehir arayabilir ve o şehre ait günlük hava durumu bilgilerini görebilir.
+- Kullanıcın ip adresi ile bölge tespiti yapılıp, uygulamayı ilk kullanımında default olarak bu bölge tespitine göre sonuçlar çıkarılır.
 - Hava durumu bilgileri gerçek zamanlı olarak RapidAPI üzerinden alınır.
+- Ip adresi bilgileri gerçek zamanlı olarak RapidAPI üzerinden alınır.
 
 
 ### Kullanılan Teknolojiler
