@@ -46,7 +46,7 @@ function CityDetail() {
   return (
     <>
       {cityWeatherData.location.name && <Header address={cityWeatherData.location.name} />}
-      <div className="w-full flex flex-col items-center justify-center  text-gray-700 p-10 bg-gradient-to-br  from-blue-500 via-sky-800 to-indigo-500 ">
+      <div className="w-full flex flex-col items-center justify-center  text-gray-700 p-10 bg-gradient-to-br  from-cyan-900 via-sky-600 to-indigo-500 ">
         <div className="w-full mt-20 max-w-screen-sm bg-white p-10 rounded-xl ring-8 ring-white ring-opacity-40">
           <div className="flex justify-between">
             <div className="flex flex-col">

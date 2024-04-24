@@ -27,4 +27,5 @@ Bu React tabanlı bir hava durumu uygulamasıdır. Kullanıcılar, belirli bir �
 
 ## Ekran Görüntüleri
 
-![alt text](image.png)
+![alt text](screenshot-1.png)
+![alt text](screenshot-2.png)

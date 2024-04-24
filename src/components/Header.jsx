@@ -17,7 +17,7 @@ function Header({address}) {
     useEffect(() => {
         const changeBackground = () => {
             if (window.scrollY >= 80) {
-                setBgColor('bg-gradient-to-br  from-blue-500 via-sky-800 to-indigo-500');
+                setBgColor('bg-gradient-to-br  from-cyan-900 via-sky-600 to-indigo-500 ');
             } else {
                 setBgColor('bg-transparent');
             }

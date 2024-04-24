@@ -97,7 +97,7 @@ function Home() {
           </form>
         </div>
       </section>
-      <div className=" mx-auto bg-gradient-to-br from-blue-500 via-sky-800 to-indigo-500">
+      <div className=" mx-auto bg-gradient-to-br from-cyan-900 via-sky-600 to-indigo-500 ">
         <div className='grid md:grid-cols-2'>
           {cityWeatherData && <WeatherCard weatherCardData={cityWeatherData} />}
           <div className="flex flex-col gap-4 justify-center items-center mt-5">
